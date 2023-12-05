@@ -11,6 +11,7 @@ HEIGHT = 900  # ゲームウィンドウの高さ
 MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
 NUM_OF_BOMBS = 5 # 爆弾の数
 
+
 def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     """
     オブジェクトが画面内or画面外を判定し，真理値タプルを返す関数
@@ -86,11 +87,14 @@ class Bird:
             if key_lst[k]:
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
+                
         self.rct.move_ip(sum_mv)
         if check_bound(self.rct) != (True, True):
             self.rct.move_ip(-sum_mv[0], -sum_mv[1])
+
         if not (sum_mv[0] == 0 and sum_mv[1] == 0): # 何もキーが押されていなくなかったら
-            self.img = self.imgs[tuple(sum_mv)] 
+            self.img = self.imgs[tuple(sum_mv)]
+
         screen.blit(self.img, self.rct)
 
 
@@ -163,6 +167,7 @@ class Score:
         self.img = self.font.render(f"スコア:{self.score}",0,self.color)
         screen.blit(self.img,self.rct)
 
+
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
@@ -183,7 +188,6 @@ def main():
                 beams.append(Beam(bird)) #ビームインスタンスの生成
             
         screen.blit(bg_img, [0, 0])
-
         for bomb in bombs:
             #if bomb is not None : 
             if bird.rct.colliderect(bomb.rct):
@@ -214,7 +218,6 @@ def main():
             beam.update(screen)
             
         score.update(screen)
-        
         pg.display.update()
         tmr += 1
         clock.tick(50)
